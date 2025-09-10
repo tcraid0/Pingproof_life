@@ -6,7 +6,7 @@
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://unpkg.com wss://relay.damus.io wss://nos.lol wss://relay.snort.social wss://relay.primal.net wss://offchain.pub; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://unpkg.com wss://relay.damus.io wss://nos.lol wss://relay.snort.social wss://relay.primal.net wss://relay.nostr.band; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none';">
     <title>pingproof.life</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -113,7 +113,7 @@
             <div class="detail-text">
                 When timer expires, connects simultaneously to:<br>
                 relay.damus.io • nos.lol • relay.snort.social<br>
-                relay.primal.net • offchain.pub
+                relay.primal.net • relay.nostr.band
             </div>
         </div>
 
@@ -135,7 +135,7 @@
         </div>
     </div>
         <footer class="app-footer">
-            pingproof.life is a frontend-only hobby project. messages are posted publicly on nostr and may be visible across apps. not for emergencies. hosted on <a href="https://github.com/tcraid0/PingProof-life" target="_blank" rel="noopener">github pages</a>. use responsibly.
+            pingproof.life is a frontend-only hobby project. messages are posted publicly on nostr and may be visible across apps. not for emergencies. hosted on <a href="https://github.com/tcraid0/Pingproof_life" target="_blank" rel="noopener">github pages</a>. use responsibly.
         </footer>
     <script src="https://unpkg.com/nostr-tools@1.17.0/lib/nostr.bundle.js"></script>
     <script>
@@ -399,7 +399,7 @@
                     'wss://nos.lol', 
                     'wss://relay.snort.social',
                     'wss://relay.primal.net',
-                    'wss://offchain.pub'
+                    'wss://relay.nostr.band'
                 ];
         
         // Connect to all relays simultaneously
@@ -1082,7 +1082,7 @@ function actuallyStartTimer() {
                         <div class="detail-text">
                             When timer expires, connects simultaneously to:<br>
                             relay.damus.io • nos.lol • relay.snort.social<br>
-                            relay.primal.net • offchain.pub
+                            relay.primal.net • relay.nostr.band
                         </div>
                     </div>
 
