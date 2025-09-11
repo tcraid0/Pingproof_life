@@ -18,11 +18,13 @@
                 <div class="tagline">simple check-in timer that posts to nostr and tags your contact</div>
 
         <div id="generateSection" class="section">
+            <div class="security-context">check-in identity is intended for one-time use</div>
             <div class="security-context">100% frontend app - keys stored locally</div>
             <button onclick="generateKeys()">generate check-in identity</button>
             <div style="margin: 16px 0; color: var(--text-secondary); font-size: 14px;">or</div>
             <button onclick="showImportForm()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">import check-in keys only</button>
         </div>
+
 
         <div id="importSection" class="section hidden">
             <div class="import-warning">never import your main nostr identity - check-in temporary keys only</div>
@@ -55,7 +57,7 @@
             <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); font-weight: 500;">enter your contact's public key (npub) - they'll be tagged when posted</label>
             <input type="text" id="contactNpub" placeholder="contact npub">
 
-            <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); font-weight: 500;">this will be publicly visible on nostr</label>
+            <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); font-weight: 500;">your check-in post is public on nostr</label>
             <textarea id="checkinMessage" rows="3" placeholder="check-in post"></textarea>
                 <div class="timer-selection">
                     <span style="font-size: 14px; color: var(--text-secondary);">check in every:</span>
@@ -155,9 +157,12 @@
         let selectedTimerHours = 24; // Default to 24 hours
 
         function selectTimer(hours, el) {
-        selectedTimerHours = hours;
-        document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
-        if (el) el.classList.add('selected');
+            // Prevent race conditions from fast clicking
+            if (!el || el.classList.contains('selected')) return;
+            
+            selectedTimerHours = hours;
+            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
+            if (el) el.classList.add('selected');
         }
 
 
@@ -441,7 +446,14 @@
         const successful = results.filter(r => r.success);
 
         if (successful.length > 0) {
-            const relayNames = successful.map(r => r.relay.split('.')[1] || r.relay.split('/')[2].split('.')[0]).join(', ');
+            const relayNames = successful.map(r => {
+                if (r.relay.includes('relay.damus.io')) return 'damus';
+                if (r.relay.includes('nos.lol')) return 'nos.lol';
+                if (r.relay.includes('relay.snort.social')) return 'snort';
+                if (r.relay.includes('relay.primal.net')) return 'primal';
+                if (r.relay.includes('relay.nostr.band')) return 'nostr.band';
+                return r.relay.split('/')[2].split('.')[0];
+            }).join(', ');
             document.getElementById('connectionStatus').textContent = `[sent to ${successful.length}/5 relays: ${relayNames}]`;
         } else {
             // Retry once more with increased timeout
@@ -475,7 +487,14 @@
     const retrySuccessful = retryResults.filter(r => r.success);
     
     if (retrySuccessful.length > 0) {
-        const retryRelayNames = retrySuccessful.map(r => r.relay.split('.')[1] || r.relay.split('/')[2].split('.')[0]).join(', ');
+        const retryRelayNames = retrySuccessful.map(r => {
+            if (r.relay.includes('relay.damus.io')) return 'damus';
+            if (r.relay.includes('nos.lol')) return 'nos.lol';
+            if (r.relay.includes('relay.snort.social')) return 'snort';
+            if (r.relay.includes('relay.primal.net')) return 'primal';
+            if (r.relay.includes('relay.nostr.band')) return 'nostr.band';
+            return r.relay.split('/')[2].split('.')[0];
+        }).join(', ');
         document.getElementById('connectionStatus').textContent = `[sent to ${retrySuccessful.length}/5 relays after retry: ${retryRelayNames}]`;
     } else {
         throw new Error('Failed to publish to any relay after retry');
@@ -1009,7 +1028,7 @@ function actuallyStartTimer() {
             sentScreen.innerHTML = `
                 <h1>pingproof.life</h1>
                 <div class="status" style="color: var(--success); margin-bottom: 32px;">
-                    check-in alert sent successfully
+                    check-in post successful
                 </div>
                 <div style="margin-bottom: 32px; font-size: 14px; color: var(--text-secondary);">
                     ${relayInfo}

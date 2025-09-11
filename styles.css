@@ -394,25 +394,35 @@ textarea {
         margin: 24px 0;
     }
     
-    /* Fix button spacing and layout */
-.timer-btn {
-    margin: 4px 3px !important;
-    padding: 12px 16px !important;
-    min-width: 60px !important;
-    min-height: 44px !important;
-    font-size: 14px !important;
-    background: var(--bg-secondary) !important;
-    border: 1.5px solid var(--text-secondary) !important;
-    color: var(--text-primary) !important;
-    flex: 1;
-    max-width: calc(25% - 6px);
-}
+   /* Enhanced timer button styling for mobile */
+    .timer-btn {
+        min-width: 60px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        padding: 12px 16px !important;
+        margin: 8px 6px 8px 0 !important;
+        background: #ffffff !important;
+        border: 2px solid var(--accent) !important;
+        color: var(--accent) !important;
+        font-weight: 500 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        -webkit-tap-highlight-color: transparent !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        line-height: 1.2 !important;
+    }
 
-.timer-selection > div {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 6px !important;
-}
+    .timer-btn:active {
+        transform: scale(0.98) !important;
+        box-shadow: 0 0 0 rgba(0,0,0,0.1) !important;
+    }
+
+    .timer-btn.selected {
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border: 2px solid var(--accent) !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+    }
 
     /* Fix key display overflow */
     .key-value {
@@ -514,10 +524,16 @@ a:focus-visible {
     margin-bottom: 20px !important;
 }
 
-/* Timer selection buttons */
 .timer-selection {
     margin: 12px 0;
     text-align: left;
+    line-height: 0;
+}
+
+.timer-selection > span {
+    line-height: 1.6;
+    display: inline-block;
+    margin-bottom: 8px;
 }
 
 /* Desktop timer buttons */
@@ -531,12 +547,25 @@ a:focus-visible {
     border-radius: 6px !important;
     min-width: 50px;
     transition: all 0.1s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
 }
 
 .timer-btn:hover {
-    background: var(--accent) !important;
+    background: var(--bg-primary) !important;
     border-color: var(--accent) !important;
-    color: #ffffff !important;
+    color: var(--accent) !important;
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .timer-btn:hover {
+        background: var(--bg-secondary) !important;
+        border-color: var(--text-secondary) !important;
+        color: var(--text-primary) !important;
+    }
 }
 
 .timer-btn.selected {
