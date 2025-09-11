@@ -520,22 +520,23 @@ a:focus-visible {
     text-align: left;
 }
 
+/* Desktop timer buttons */
 .timer-btn {
     font-size: 14px !important;
     padding: 10px 16px !important;
     margin: 0 6px 0 0 !important;
-    background: transparent !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
+    background: var(--bg-secondary) !important;
+    border: 1.5px solid var(--text-secondary) !important;
+    color: var(--text-primary) !important;
     border-radius: 6px !important;
     min-width: 50px;
     transition: all 0.1s ease !important;
 }
 
 .timer-btn:hover {
-    background: var(--bg-secondary) !important;
+    background: var(--accent) !important;
     border-color: var(--accent) !important;
-    color: var(--text-primary) !important;
+    color: #ffffff !important;
 }
 
 .timer-btn.selected {
