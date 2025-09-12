@@ -20,9 +20,9 @@
         <div id="generateSection" class="section">
             <div class="security-context">check-in identity is intended for one-time use</div>
             <div class="security-context">100% frontend app - keys stored locally</div>
-            <button onclick="generateKeys()">generate check-in identity</button>
+            <button id="generateKeysBtn">generate check-in identity</button>
             <div style="margin: 16px 0; color: var(--text-secondary); font-size: 14px;">or</div>
-            <button onclick="showImportForm()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">import check-in keys only</button>
+            <button id="showImportBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">import check-in keys only</button>
         </div>
 
 
@@ -30,8 +30,8 @@
             <div class="import-warning">never import your main nostr identity - check-in temporary keys only</div>
             <input type="text" id="importNsec" placeholder="paste temporary check-in nsec here">
             <div style="margin: 8px 0;">
-                <button onclick="importKeys()">import</button>
-                <button onclick="cancelImport()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); margin-left: 8px;">cancel</button>
+                <button id="importKeysBtn">import</button>
+                <button id="cancelImportBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); margin-left: 8px;">cancel</button>
             </div>
         </div>
 
@@ -40,13 +40,13 @@
             <div class="key-display">
                 <label>private key (NEVER SHARE):</label>
                 <div class="key-value" id="nsecDisplay" data-hidden="true">•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••</div>
-                <button class="key-toggle-btn" onclick="toggleNsecVisibility()">show</button>
-                <button onclick="copyNsec()">copy</button>
+                <button class="key-toggle-btn" id="toggleNsecBtn">show</button>
+                <button id="copyNsecBtn">copy</button>
             </div>
                 <div class="key-display">
                     <label>public key (share with check-in contact):</label>
                     <div class="key-value" id="npubDisplay"></div>
-                    <button onclick="copyNpub()">copy</button>
+                    <button id="copyNpubBtn">copy</button>
                 </div>
             </div>
 
@@ -62,18 +62,17 @@
                 <div class="timer-selection">
                     <span style="font-size: 14px; color: var(--text-secondary);">check in every:</span>
                     <div style="margin-top: 8px;">
-                        <button class="timer-btn" onclick="selectTimer(0.0167, this)">1m (test)</button>
-                        <button class="timer-btn" onclick="selectTimer(1, this)">1h</button>
-                        <button class="timer-btn" onclick="selectTimer(6, this)">6h</button>
-                        <button class="timer-btn" onclick="selectTimer(12, this)">12h</button>
-                        <button class="timer-btn selected" onclick="selectTimer(24, this)">24h</button>
-                        <button class="timer-btn" onclick="selectTimer(48, this)">48h</button>
-                        <button class="timer-btn" onclick="selectTimer(72, this)">72h</button>
-
+                        <button class="timer-btn" data-hours="0.0167">1m (test)</button>
+                        <button class="timer-btn" data-hours="1">1h</button>
+                        <button class="timer-btn" data-hours="6">6h</button>
+                        <button class="timer-btn" data-hours="12">12h</button>
+                        <button class="timer-btn selected" data-hours="24">24h</button>
+                        <button class="timer-btn" data-hours="48">48h</button>
+                        <button class="timer-btn" data-hours="72">72h</button>
 
                     </div>
                 </div>
-                <button onclick="startTimer()">start countdown</button>
+                <button id="startTimerBtn">start countdown</button>
                 <div id="validationMessage" class="validation-message hidden"></div>
             </div>
             <div id="backupSection" class="section hidden">
@@ -81,13 +80,13 @@
                 <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-secondary);">
                     save this information in a secure location before starting the timer
                 </div>
-                <button onclick="showBackupData()" style="margin-right: 8px;">view backup data</button>
-                <button onclick="downloadBackup()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">download as file</button>
+                <button id="showBackupBtn" style="margin-right: 8px;">view backup data</button>
+                <button id="downloadBackupBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">download as file</button>
                 
                 <div id="backupDisplay" class="key-section hidden" style="margin-top: 16px;">
                     <pre id="backupContent" style="text-align: left; font-size: 12px; line-height: 1.4; white-space: pre-wrap;"></pre>
-                    <button onclick="copyBackupData()" style="margin-top: 12px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">copy all</button>
-                    <button onclick="actuallyStartTimer()" style="margin-top: 12px; margin-left: 8px;">start timer now</button>
+                    <button id="copyBackupBtn" style="margin-top: 12px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">copy all</button>
+                    <button id="actuallyStartTimerBtn" style="margin-top: 12px; margin-left: 8px;">start timer now</button>
                 </div>
             </div>
             <div class="browser-warning">important: only works while this browser tab stays open and awake</div>
@@ -97,16 +96,17 @@
         </div>
 
         <!-- Timer Screen -->
+        <!-- Timer Screen -->
         <div id="timerScreen" class="hidden">
             <h1>pingproof.life</h1>
             
-            <button onclick="backToSetup()" class="back-button">← back to setup</button>
+            <button id="backToSetupBtn" class="back-button">← back to setup</button>
             
             <div class="status" id="connectionStatus"></div>
             
             <div class="timer" id="timerDisplay">00:00:00</div>
 
-            <div class="connection-info-link" onclick="toggleConnectionInfo()">
+            <div class="connection-info-link" id="toggleConnectionInfoLink">
                 <span class="info-text">relay info</span>
             </div>
 
@@ -123,14 +123,14 @@
         <div class="status" style="font-size: 12px; margin-bottom: 8px;">[timer runs only while tab is open; phone background unreliable]</div>
         <div class="status" id="publicPostReminder">[check-in post will be public]</div>
 
-            <button onclick="checkIn(this)">i'm here</button>
+            <button id="checkInBtn">i'm here</button>
 
             <div style="margin-top: 40px;">
-            <button onclick="stopTimer()" style="font-size: 14px;">stop timer</button>
+            <button id="stopTimerBtn" style="font-size: 14px;">stop timer</button>
             <div id="stopConfirmation" class="hidden" style="margin-top: 24px; text-align: center;">
                 <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-secondary);">stop check-in timer?</div>
-                <button onclick="confirmStop()" style="font-size: 14px; margin-right: 8px;">yes, stop timer</button>
-                <button onclick="cancelStop()" style="font-size: 14px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">cancel</button>
+                <button id="confirmStopBtn" style="font-size: 14px; margin-right: 8px;">yes, stop timer</button>
+                <button id="cancelStopBtn" style="font-size: 14px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">cancel</button>
             </div>
             </div>
 
@@ -157,14 +157,19 @@
         let selectedTimerHours = 24; // Default to 24 hours
 
         function selectTimer(hours, el) {
-            // Prevent race conditions from fast clicking
-            if (!el || el.classList.contains('selected')) return;
+            if (!el) return;
             
             selectedTimerHours = hours;
             document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
-            if (el) el.classList.add('selected');
+            el.classList.add('selected');
         }
 
+        // New function for event listener version
+        function handleTimerSelection(event) {
+            const button = event.target;
+            const hours = parseFloat(button.getAttribute('data-hours'));
+            selectTimer(hours, button);
+        }
 
         // Key Manager Module
         const KeyManager = {
@@ -617,6 +622,12 @@
         }, 1000);
         }
 
+        // New function for event listener version
+        function handleCheckIn(event) {
+            const button = event.target;
+            checkIn(button);
+        }
+
 
         function stopTimer() {
             showStopConfirmation();
@@ -719,8 +730,8 @@
 
         function showCopyFeedback(keyType) {
             const button = keyType === 'nsec' ? 
-                document.querySelector('.key-display button[onclick="copyNsec()"]') :
-                document.querySelector('.key-display button[onclick="copyNpub()"]');
+                document.getElementById('copyNsecBtn') :
+                document.getElementById('copyNpubBtn');
             
             const originalText = button.textContent;
             button.textContent = '✓';
@@ -874,7 +885,7 @@ function copyBackupData() {
         return;
     }
     
-    const button = document.querySelector('#backupDisplay button');
+    const button = document.getElementById('copyBackupBtn');
     const originalText = button.textContent;
     button.textContent = 'copied!';
     button.style.background = 'var(--success)';
@@ -945,6 +956,12 @@ function actuallyStartTimer() {
             location.reload();
         }
 
+        function startFreshTimer() {
+            localStorage.removeItem('proof_deadline');
+            state.deadline = null;
+            location.reload();
+        }
+
         Timer.showDeadlinePassedScreen = function() {
             const now = new Date();
             const timePassed = now - state.deadline;
@@ -956,16 +973,35 @@ function actuallyStartTimer() {
             
             // Create new screen element
             const deadlineScreen = document.createElement('div');
-            deadlineScreen.innerHTML = `
-                <h1>pingproof.life</h1>
-                <div class="status" style="color: #dc3545; margin-bottom: 32px;">
-                    deadline passed ${minutes} minutes ago
-                </div>
-                <div style="margin-bottom: 32px; font-size: 14px; color: var(--text-secondary);">
-                    browser was closed - nothing posted
-                </div>
-                <button onclick="clearEverythingAndRestart()">start over</button>
-            `;
+            
+            // Create title
+            const title = document.createElement('h1');
+            title.textContent = 'pingproof.life';
+            
+            // Create status message
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status';
+            statusDiv.style.color = '#dc3545';
+            statusDiv.style.marginBottom = '32px';
+            statusDiv.textContent = `deadline passed ${minutes} minutes ago`;
+            
+            // Create info message
+            const infoDiv = document.createElement('div');
+            infoDiv.style.marginBottom = '32px';
+            infoDiv.style.fontSize = '14px';
+            infoDiv.style.color = 'var(--text-secondary)';
+            infoDiv.textContent = 'browser was closed - nothing posted';
+            
+            // Create button
+            const button = document.createElement('button');
+            button.textContent = 'start over';
+            button.addEventListener('click', clearEverythingAndRestart);
+            
+            // Assemble screen
+            deadlineScreen.appendChild(title);
+            deadlineScreen.appendChild(statusDiv);
+            deadlineScreen.appendChild(infoDiv);
+            deadlineScreen.appendChild(button);
             
             // Replace container content
             const container = document.querySelector('.container');
@@ -990,17 +1026,45 @@ function actuallyStartTimer() {
             
             // Create protection paused screen
             const pausedScreen = document.createElement('div');
-            pausedScreen.innerHTML = `
-                <h1>pingproof.life</h1>
-                <div class="status" style="color: var(--text-secondary); margin-bottom: 32px;">
-                    timer paused - started ${hoursAgo}h ago
-                </div>
-                <div style="margin-bottom: 32px; font-size: 14px; color: var(--text-secondary);">
-                    ${hours}h ${minutes}m remaining when browser closed
-                </div>
-                <button onclick="resumeCountdown()" style="margin-bottom: 16px;">resume countdown</button>
-                <button onclick="startFreshTimer()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">start fresh timer</button>
-            `;
+            
+            // Create title
+            const title = document.createElement('h1');
+            title.textContent = 'pingproof.life';
+            
+            // Create status message
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status';
+            statusDiv.style.color = 'var(--text-secondary)';
+            statusDiv.style.marginBottom = '32px';
+            statusDiv.textContent = `timer paused - started ${hoursAgo}h ago`;
+            
+            // Create remaining time message
+            const remainingDiv = document.createElement('div');
+            remainingDiv.style.marginBottom = '32px';
+            remainingDiv.style.fontSize = '14px';
+            remainingDiv.style.color = 'var(--text-secondary)';
+            remainingDiv.textContent = `${hours}h ${minutes}m remaining when browser closed`;
+            
+            // Create resume button
+            const resumeButton = document.createElement('button');
+            resumeButton.textContent = 'resume countdown';
+            resumeButton.style.marginBottom = '16px';
+            resumeButton.addEventListener('click', resumeCountdown);
+            
+            // Create start fresh button
+            const freshButton = document.createElement('button');
+            freshButton.textContent = 'start fresh timer';
+            freshButton.style.background = 'transparent';
+            freshButton.style.border = '1px solid var(--border)';
+            freshButton.style.color = 'var(--text-secondary)';
+            freshButton.addEventListener('click', startFreshTimer);
+            
+            // Assemble screen
+            pausedScreen.appendChild(title);
+            pausedScreen.appendChild(statusDiv);
+            pausedScreen.appendChild(remainingDiv);
+            pausedScreen.appendChild(resumeButton);
+            pausedScreen.appendChild(freshButton);
             
             // Replace container content
             const container = document.querySelector('.container');
@@ -1025,16 +1089,36 @@ function actuallyStartTimer() {
             
             // Create message sent screen
             const sentScreen = document.createElement('div');
-            sentScreen.innerHTML = `
-                <h1>pingproof.life</h1>
-                <div class="status" style="color: var(--success); margin-bottom: 32px;">
-                    check-in post successful
-                </div>
-                <div style="margin-bottom: 32px; font-size: 14px; color: var(--text-secondary);">
-                    ${relayInfo}
-                </div>
-                <button onclick="clearEverythingAndRestart()" style="margin-bottom: 16px;">start over</button>
-            `;
+            
+            // Create title
+            const title = document.createElement('h1');
+            title.textContent = 'pingproof.life';
+            
+            // Create success status
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status';
+            statusDiv.style.color = 'var(--success)';
+            statusDiv.style.marginBottom = '32px';
+            statusDiv.textContent = 'check-in post successful';
+            
+            // Create relay info
+            const infoDiv = document.createElement('div');
+            infoDiv.style.marginBottom = '32px';
+            infoDiv.style.fontSize = '14px';
+            infoDiv.style.color = 'var(--text-secondary)';
+            infoDiv.textContent = relayInfo;
+            
+            // Create button
+            const button = document.createElement('button');
+            button.textContent = 'start over';
+            button.style.marginBottom = '16px';
+            button.addEventListener('click', clearEverythingAndRestart);
+            
+            // Assemble screen
+            sentScreen.appendChild(title);
+            sentScreen.appendChild(statusDiv);
+            sentScreen.appendChild(infoDiv);
+            sentScreen.appendChild(button);
             
             // Replace container content
             const container = document.querySelector('.container');
@@ -1049,17 +1133,45 @@ function actuallyStartTimer() {
             
             // Create message failed screen
             const failedScreen = document.createElement('div');
-            failedScreen.innerHTML = `
-                <h1>pingproof.life</h1>
-                <div class="status" style="color: var(--danger); margin-bottom: 32px;">
-                    failed to send check-in message
-                </div>
-                <div style="margin-bottom: 32px; font-size: 14px; color: var(--text-secondary);">
-                    check your connection and try again
-                </div>
-                <button onclick="sendCheckInNow()" style="margin-bottom: 16px;">try again</button>
-                <button onclick="clearEverythingAndRestart()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">start over</button>
-            `;
+            
+            // Create title
+            const title = document.createElement('h1');
+            title.textContent = 'pingproof.life';
+            
+            // Create error status
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status';
+            statusDiv.style.color = 'var(--danger)';
+            statusDiv.style.marginBottom = '32px';
+            statusDiv.textContent = 'failed to send check-in message';
+            
+            // Create help text
+            const helpDiv = document.createElement('div');
+            helpDiv.style.marginBottom = '32px';
+            helpDiv.style.fontSize = '14px';
+            helpDiv.style.color = 'var(--text-secondary)';
+            helpDiv.textContent = 'check your connection and try again';
+            
+            // Create try again button
+            const tryButton = document.createElement('button');
+            tryButton.textContent = 'try again';
+            tryButton.style.marginBottom = '16px';
+            tryButton.addEventListener('click', sendCheckInNow);
+            
+            // Create start over button
+            const startOverButton = document.createElement('button');
+            startOverButton.textContent = 'start over';
+            startOverButton.style.background = 'transparent';
+            startOverButton.style.border = '1px solid var(--border)';
+            startOverButton.style.color = 'var(--text-secondary)';
+            startOverButton.addEventListener('click', clearEverythingAndRestart);
+            
+            // Assemble screen
+            failedScreen.appendChild(title);
+            failedScreen.appendChild(statusDiv);
+            failedScreen.appendChild(helpDiv);
+            failedScreen.appendChild(tryButton);
+            failedScreen.appendChild(startOverButton);
             
             // Replace container content
             const container = document.querySelector('.container');
@@ -1084,16 +1196,16 @@ function actuallyStartTimer() {
             state.nsec = keys.nsec;
             state.npub = keys.npub;
             
-            // Restore the timer screen HTML structure
+            // Restore the timer screen HTML structure WITHOUT onclick handlers
             const container = document.querySelector('.container');
             container.innerHTML = `
                 <div id="setupScreen" class="hidden"></div>
                 <div id="timerScreen">
                     <h1>pingproof.life</h1>
-                    <button onclick="backToSetup()" class="back-button">← back to setup</button>
+                    <button id="backToSetupBtn" class="back-button">← back to setup</button>
                     <div class="status" id="connectionStatus"></div>
                     <div class="timer" id="timerDisplay">00:00:00</div>
-                    <div class="connection-info-link" onclick="toggleConnectionInfo()">
+                    <div class="connection-info-link" id="toggleConnectionInfoLink">
                         <span class="info-text">relay info</span>
                     </div>
                     <div id="connectionInfo" class="connection-details hidden">
@@ -1109,18 +1221,26 @@ function actuallyStartTimer() {
                     <div class="status" style="font-size: 12px; margin-bottom: 8px;">[timer runs only while tab is open; phone background unreliable]</div>
                     <div class="status" id="publicPostReminder">[check-in post will be public]</div>
 
-                    <button onclick="checkIn(this)">i'm here</button>
+                    <button id="checkInBtn">i'm here</button>
 
                     <div style="margin-top: 40px;">
-                        <button onclick="stopTimer()" style="font-size: 14px;">stop timer</button>
+                        <button id="stopTimerBtn" style="font-size: 14px;">stop timer</button>
                         <div id="stopConfirmation" class="hidden" style="margin-top: 24px; text-align: center;">
                             <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-secondary);">stop check-in timer?</div>
-                            <button onclick="confirmStop()" style="font-size: 14px; margin-right: 8px;">yes, stop timer</button>
-                            <button onclick="cancelStop()" style="font-size: 14px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">cancel</button>
+                            <button id="confirmStopBtn" style="font-size: 14px; margin-right: 8px;">yes, stop timer</button>
+                            <button id="cancelStopBtn" style="font-size: 14px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">cancel</button>
                         </div>
                     </div>
                 </div>
             `;
+            
+            // Add event listeners to the newly created elements
+            document.getElementById('backToSetupBtn').addEventListener('click', backToSetup);
+            document.getElementById('toggleConnectionInfoLink').addEventListener('click', toggleConnectionInfo);
+            document.getElementById('checkInBtn').addEventListener('click', handleCheckIn);
+            document.getElementById('stopTimerBtn').addEventListener('click', stopTimer);
+            document.getElementById('confirmStopBtn').addEventListener('click', confirmStop);
+            document.getElementById('cancelStopBtn').addEventListener('click', cancelStop);
             
             // Now resume countdown with the restored elements
             Timer.updateCountdown();
@@ -1128,9 +1248,110 @@ function actuallyStartTimer() {
             updateDeadlineDisplay();
         }
 
-        function startFreshTimer() {
-            clearEverythingAndRestart();
-        }
+        // Event listeners - replacing inline handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate keys button
+            const generateBtn = document.getElementById('generateKeysBtn');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', generateKeys);
+            }
+            
+            // Show import button
+            const showImportBtn = document.getElementById('showImportBtn');
+            if (showImportBtn) {
+                showImportBtn.addEventListener('click', showImportForm);
+            }
+
+             // Import form buttons
+            const importKeysBtn = document.getElementById('importKeysBtn');
+            if (importKeysBtn) {
+                importKeysBtn.addEventListener('click', importKeys);
+            }
+            
+            const cancelImportBtn = document.getElementById('cancelImportBtn');
+            if (cancelImportBtn) {
+                cancelImportBtn.addEventListener('click', cancelImport);
+            }
+            
+            // Key display buttons
+            const toggleNsecBtn = document.getElementById('toggleNsecBtn');
+            if (toggleNsecBtn) {
+                toggleNsecBtn.addEventListener('click', toggleNsecVisibility);
+            }
+            
+            const copyNsecBtn = document.getElementById('copyNsecBtn');
+            if (copyNsecBtn) {
+                copyNsecBtn.addEventListener('click', copyNsec);
+            }
+            
+            const copyNpubBtn = document.getElementById('copyNpubBtn');
+            if (copyNpubBtn) {
+                copyNpubBtn.addEventListener('click', copyNpub);
+            }
+
+            // Timer selection buttons
+            const timerButtons = document.querySelectorAll('.timer-btn');
+            timerButtons.forEach(button => {
+                button.addEventListener('click', handleTimerSelection);
+            });
+            
+            // Setup and backup buttons
+            const startTimerBtn = document.getElementById('startTimerBtn');
+            if (startTimerBtn) {
+                startTimerBtn.addEventListener('click', startTimer);
+            }
+            
+            const showBackupBtn = document.getElementById('showBackupBtn');
+            if (showBackupBtn) {
+                showBackupBtn.addEventListener('click', showBackupData);
+            }
+            
+            const downloadBackupBtn = document.getElementById('downloadBackupBtn');
+            if (downloadBackupBtn) {
+                downloadBackupBtn.addEventListener('click', downloadBackup);
+            }
+            
+            const copyBackupBtn = document.getElementById('copyBackupBtn');
+            if (copyBackupBtn) {
+                copyBackupBtn.addEventListener('click', copyBackupData);
+            }
+            
+            const actuallyStartTimerBtn = document.getElementById('actuallyStartTimerBtn');
+            if (actuallyStartTimerBtn) {
+                actuallyStartTimerBtn.addEventListener('click', actuallyStartTimer);
+            }
+
+            // Timer screen buttons
+            const backToSetupBtn = document.getElementById('backToSetupBtn');
+            if (backToSetupBtn) {
+                backToSetupBtn.addEventListener('click', backToSetup);
+            }
+            
+            const toggleConnectionInfoLink = document.getElementById('toggleConnectionInfoLink');
+            if (toggleConnectionInfoLink) {
+                toggleConnectionInfoLink.addEventListener('click', toggleConnectionInfo);
+            }
+            
+            const checkInBtn = document.getElementById('checkInBtn');
+            if (checkInBtn) {
+                checkInBtn.addEventListener('click', handleCheckIn);
+            }
+            
+            const stopTimerBtn = document.getElementById('stopTimerBtn');
+            if (stopTimerBtn) {
+                stopTimerBtn.addEventListener('click', stopTimer);
+            }
+            
+            const confirmStopBtn = document.getElementById('confirmStopBtn');
+            if (confirmStopBtn) {
+                confirmStopBtn.addEventListener('click', confirmStop);
+            }
+            
+            const cancelStopBtn = document.getElementById('cancelStopBtn');
+            if (cancelStopBtn) {
+                cancelStopBtn.addEventListener('click', cancelStop);
+            }
+        });
     </script>
 </body>
 </html>
