@@ -58,7 +58,7 @@
             <input type="text" id="contactNpub" placeholder="contact npub">
 
             <label style="display: block; margin-top: 16px; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); font-weight: 500;">your check-in post is public on nostr</label>
-            <textarea id="checkinMessage" rows="3" placeholder="check-in post"></textarea>
+            <textarea id="checkinMessage" rows="3" placeholder="check-in post" maxlength="500"></textarea>
                 <div class="timer-selection">
                     <span style="font-size: 14px; color: var(--text-secondary);">check in every:</span>
                     <div style="margin-top: 8px;">
@@ -607,19 +607,29 @@
                 document.getElementById('backupSection').classList.remove('hidden');
             }
 
+        // Add this variable at the top with your other state variables
+        let lastCheckIn = 0;
+
         function checkIn(btn) {
-        // Prevent double-clicks
-        if (!btn || btn.disabled) return;
+            // Rate limiting - prevent rapid clicks
+            const now = Date.now();
+            if (now - lastCheckIn < 1000) {
+                return; // Ignore clicks within 1 second
+            }
+            lastCheckIn = now;
 
-        btn.disabled = true;
-        btn.textContent = 'resetting...';
+            // Prevent double-clicks
+            if (!btn || btn.disabled) return;
 
-        Timer.reset();
+            btn.disabled = true;
+            btn.textContent = 'resetting...';
 
-        setTimeout(() => {
-            btn.disabled = false;
-            btn.textContent = "i'm here";
-        }, 1000);
+            Timer.reset();
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = "i'm here";
+            }, 1000);
         }
 
         // New function for event listener version
