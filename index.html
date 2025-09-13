@@ -22,13 +22,13 @@
             <div class="security-context">100% frontend app - keys stored locally</div>
             <button id="generateKeysBtn">generate check-in identity</button>
             <div style="margin: 16px 0; color: var(--text-secondary); font-size: 14px;">or</div>
-            <button id="showImportBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">import check-in keys only</button>
+            <button id="showImportBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">import check-in keys</button>
         </div>
 
 
         <div id="importSection" class="section hidden">
-            <div class="import-warning">never import your main nostr identity - check-in temporary keys only</div>
-            <input type="text" id="importNsec" placeholder="paste temporary check-in nsec here">
+            <div class="import-warning">avoid your main nostr identity – one-time check-in keys recommended</div>
+            <input type="text" id="importNsec" placeholder="paste check-in nsec here">
             <div style="margin: 8px 0;">
                 <button id="importKeysBtn">import</button>
                 <button id="cancelImportBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); margin-left: 8px;">cancel</button>
@@ -89,7 +89,7 @@
                     <button id="actuallyStartTimerBtn" style="margin-top: 12px; margin-left: 8px;">start timer now</button>
                 </div>
             </div>
-            <div class="browser-warning">important: only works while this browser tab stays open and awake</div>
+            <div class="browser-warning">important: timer only runs if this tab stays open</div>
             <div class="nostr-attribution">
                 <span class="attribution-text">powered by <span class="nostr-purple">nostr</span></span>
             </div>
